@@ -1,1 +1,3 @@
-class Assets {}
+class Assets {
+
+}
