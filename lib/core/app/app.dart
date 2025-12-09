@@ -1,24 +1,19 @@
-// import 'package:flutter/material.dart';
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold(
-//       body: Center(
-//         child: Text(
-//           "Hello Limo",
-//           style: TextStyle(fontSize: 28),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-//
-//
-//
-//
-//
-//
+import 'package:flutter/material.dart';
+
+import '../../features/listening1/presentation/screen/questionType1Screen.dart';
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: SafeArea(
+          child: QuestionType1Screen(),
+        ),
+      ),
+    );
+  }
+}
