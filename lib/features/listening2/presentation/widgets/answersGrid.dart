@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'answerCardWithoutPhoto.dart';
 
-class AnswersGridType2 extends StatelessWidget {
+class AnswersGridType2 extends StatefulWidget {
   final Function(String option) onTap;
 
   const AnswersGridType2({super.key, required this.onTap});
+
+  @override
+  State<AnswersGridType2> createState() => _AnswersGridType2State();
+}
+
+class _AnswersGridType2State extends State<AnswersGridType2> {
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +35,16 @@ class AnswersGridType2 extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           return AnswerCardWithoutPhoto(
-            label: options[index],
+            label: options[index],              isSelected: selectedIndex == index,
+
             onTap: (s) {
-              onTap(s);
-            },
+              setState(() {
+                selectedIndex = index;
+              });
+              widget.onTap(options[index]);            },
           );
         },
       ),
     );
   }
-  }
+}

@@ -5,36 +5,34 @@ import '../../../../core/constants/colors.dart';
 class AnswerCardWithoutPhoto extends StatefulWidget {
   final String label;
   final Function(String option) onTap;
+  final bool isSelected;
 
   const AnswerCardWithoutPhoto({
     super.key,
     required this.label,
     required this.onTap,
-
+required this.isSelected,
   });
   @override
   State<AnswerCardWithoutPhoto> createState() => _AnswerCardWithoutPhotoState();
 }
 
 class _AnswerCardWithoutPhotoState extends State<AnswerCardWithoutPhoto> {
-  bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isSelected = !isSelected;
-        });
+
         widget.onTap(widget.label);
       },
       child: Container(
         padding: const EdgeInsets.symmetric( vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.hoverBG: Colors.white,
+          color: widget.isSelected ? AppColors.hoverBG: Colors.white,
           borderRadius: BorderRadius.circular(16),
 border: Border.all(
-  color:isSelected ? AppColors.mainColor : AppColors.color300,
+  color:widget.isSelected ? AppColors.mainColor : AppColors.color300,
   width: 2,
 ),
         ),

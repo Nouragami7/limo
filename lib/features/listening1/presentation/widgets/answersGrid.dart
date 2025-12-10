@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import '../widgets/answerCardWithPhoto.dart';
 
-class AnswersGrid extends StatelessWidget {
+class AnswersGrid extends StatefulWidget {
   final Function(String option) onTap;
 
   const AnswersGrid({super.key, required this.onTap});
+
+  @override
+  State<AnswersGrid> createState() => _AnswersGridState();
+}
+
+class _AnswersGridState extends State<AnswersGrid> {
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +37,16 @@ class AnswersGrid extends StatelessWidget {
           return AnswerCardWithPhoto(
             label: options[index]["label"]!,
             image: options[index]["image"],
+            isSelected: selectedIndex == index,
             onTap: (s) {
-              onTap(options[index]["label"]!);
+              setState(() {
+                selectedIndex = index;
+              });
+              widget.onTap(options[index]["label"]!);
             },
           );
         },
       ),
     );
   }
-  }
+}

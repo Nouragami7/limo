@@ -5,12 +5,15 @@ import '../../../../core/constants/colors.dart';
 class AnswerCardWithPhoto extends StatefulWidget {
   final String label;
   final String? image;
+  final bool isSelected;
+
   final Function(String option) onTap;
 
   const AnswerCardWithPhoto({
     super.key,
     required this.label,
     this.image,
+    required this.isSelected,
     required this.onTap,
 
   });
@@ -19,24 +22,23 @@ class AnswerCardWithPhoto extends StatefulWidget {
 }
 
 class _AnswerCardWithPhotoState extends State<AnswerCardWithPhoto> {
-  bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isSelected = !isSelected;
-        });
+        // setState(() {
+        //   isSelected = !isSelected;
+        // });
         widget.onTap(widget.label);
       },
       child: Container(
         padding: const EdgeInsets.symmetric( vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.hoverBG: Colors.white,
+          color: widget.isSelected ? AppColors.hoverBG: Colors.white,
           borderRadius: BorderRadius.circular(16),
 border: Border.all(
-  color:isSelected ? AppColors.mainColor : AppColors.color300,
+  color:widget.isSelected ? AppColors.mainColor : AppColors.color300,
   width: 2,
 ),
         ),
