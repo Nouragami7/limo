@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
+import '../utils/tts_service.dart';
 
 class CustomSoundButton extends StatelessWidget {
   final double width;
   final double height;
   final double iconSize;
-  final VoidCallback? onTap;
+ // final VoidCallback? onTap;
+  final String text;
+
 
   const CustomSoundButton({
     super.key,
     this.width = 34,
     this.height = 34,
     this.iconSize = 20,
-    this.onTap,
+   // this.onTap,
+    this.text = "Sound",
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: (){TtsService.speak(text);},
       child: Container(
         width: width,
         height: height,
