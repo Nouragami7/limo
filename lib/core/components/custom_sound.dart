@@ -29,7 +29,7 @@ class CustomSoundButton extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: const Color(0xFF09D3C6),
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(14),
           boxShadow: const [
             BoxShadow(
               color:AppColors.hoverBG,

@@ -4,7 +4,7 @@ import '../../../../core/constants/colors.dart';
 
 class AnswerCardWithoutPhoto extends StatefulWidget {
   final String label;
-  final Function(bool isSelected) onTap;
+  final Function(String option) onTap;
 
   const AnswerCardWithoutPhoto({
     super.key,
@@ -26,7 +26,7 @@ class _AnswerCardWithoutPhotoState extends State<AnswerCardWithoutPhoto> {
         setState(() {
           isSelected = !isSelected;
         });
-        widget.onTap(isSelected);
+        widget.onTap(widget.label);
       },
       child: Container(
         padding: const EdgeInsets.symmetric( vertical: 10),
@@ -44,7 +44,7 @@ border: Border.all(
               widget.label,
               style: TextStyle(
                 color:AppColors.color700,
-                fontSize: 45,
+                fontSize: 40,
                 fontWeight: FontWeight.w500,
 letterSpacing: 0.3
               ),

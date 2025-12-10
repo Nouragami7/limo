@@ -1,73 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
+import 'package:limo/features/listening2/presentation/screen/questionType2Screen.dart';
+import '../../../../core/components/custom_btn_continue.dart';
+import '../../../../core/components/custom_sound.dart';
 import '../../../../core/components/progressBar.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/utils/navigation_functions.dart';
+import '../../../../core/utils/tts_service.dart';
 import '../widgets/answerCardWithPhoto.dart';
 
-class QuestionType1Screen extends StatelessWidget {
+class QuestionType1Screen extends StatefulWidget {
   const QuestionType1Screen({super.key});
 
+  @override
+  State<QuestionType1Screen> createState() => _QuestionType1ScreenState();
+}
+
+class _QuestionType1ScreenState extends State<QuestionType1Screen> {
+  String? selectedAnswer;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      TtsService.speak("coffee");
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
-            children: [
-            ProgressBar(progress: 0.2, question: "اختر الاجابة الصحيحة"),
-        Padding(
-          padding: const EdgeInsets.only(right: 25.0),
-          child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+        body: Stack(
           children: [
-          Text(
-          "قهوة",
-          style: const TextStyle(
-          fontFamily: 'Cairo',
-          fontSize: 24,
-            decoration: TextDecoration.underline,
-            decorationStyle: TextDecorationStyle.dotted,
-            decorationThickness: 1,
-          fontWeight: FontWeight.w600,
-          color: AppColors.color700,
-          ),
-          textDirection: TextDirection.rtl,
-          ),
-        
-          const SizedBox(width: 12),
-        
-          GestureDetector(
-          onTap: () {},
-          child: Container(
-          width: 34,
-          height: 34,
-          decoration: BoxDecoration(
-          color: const Color(0xFF09D3C6),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-          BoxShadow(
-          color: AppColors.hoverBG,
-          offset: Offset(-3, -3),
-          blurRadius: 6,
-          ),
-          BoxShadow(
-          color: AppColors.mainColor,
-          offset: Offset(0, 3),
-          ),
+            Positioned.fill(
+              child: Column(
+                  children: [
+                  ProgressBar(progress: 0.2, question: "اختر الاجابة الصحيحة"),
+              Padding(
+                padding: const EdgeInsets.only(right: 25.0),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                Text(
+                "قهوة",
+                style: const TextStyle(
+                fontFamily: 'Cairo',
+                fontSize: 24,
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.dotted,
+                  decorationThickness: 1,
+                fontWeight: FontWeight.w600,
+                color: AppColors.color700,
+                ),
+                textDirection: TextDirection.rtl,
+                ),
+
+                const SizedBox(width: 12),
+
+
+                 CustomSoundButton(
+                  width: 30,
+                  height: 30,
+                  iconSize: 17,
+                  text: "Coffee",
+                ),
+
+
+                ],
+                ),
+              ),
+              SizedBox(height: 15),
+              AnswersGrid(
+                onTap: (s) {
+                  setState(() {
+                    selectedAnswer = s;
+                  });
+                },
+              )
+                  ]
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 30,
+              child: CustomButton(
+                text: "تحقق",
+                isEnabled: selectedAnswer != null,
+                onTap: () {
+                  NavigationFunctions.navigateWithSlide(context, QuestionType2Screen());
+                },
+              ),
+            ),
+
           ],
-          ),
-          child: const Icon(
-          Icons.volume_up_rounded,
-          color: Colors.white,
-          size: 20,
-          ),
-          ),
-          ),
-          ],
-          ),
-        ),
-        SizedBox(height: 15),
-        AnswersGrid()
-            ]
         ),
       ),
     );
