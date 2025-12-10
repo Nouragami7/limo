@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: AppRoute.screen1 ,// change this to the first screen you want to show
+      initialRoute: AppRoute.screen2 ,// change this to the first screen you want to show
       onGenerateRoute: RouteGenerator.generateRoute,
       //note : to naviigate from page to page use :
       //Navigator.pushNamed(context, "/signup");
