@@ -25,6 +25,12 @@ class _QuestionType2ScreenState extends State<QuestionType2Screen> {
       TtsService.speak("a");
     });
   }
+  bool isCorrect = false;
+  bool isWrong = false;
+  String correctAnswer = "a";
+  String selected = "";
+  bool hasChecked = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +57,8 @@ class _QuestionType2ScreenState extends State<QuestionType2Screen> {
 
                   const SizedBox(height: 10),
 
-                  AnswersGridType2(
+                  AnswersGridType2( disabled: hasChecked,
+                    isWrong: isWrong,
                     onTap: (s) {
                       setState(() {
                         selectedAnswer = s;
@@ -61,15 +68,40 @@ class _QuestionType2ScreenState extends State<QuestionType2Screen> {
                 ],
               ),
             ),
-
+            if (isCorrect || isWrong)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: AnswerResultSection(
+                  isCorrect: isCorrect,
+                  isWrong: isWrong,
+                  correctAnswer: correctAnswer,
+                  onTap: () {
+                    setState(() { hasChecked = !hasChecked;
+                    });
+                  },
+                ),
+              ),
             Positioned(
               left: 0,
               right: 0,
-              bottom: 30,
+              bottom: 25,
               child: CustomButton(
-                text: "تحقق",
+                text: hasChecked ? "استمر" : "تحقق",
                 isEnabled: selectedAnswer != null,
                 onTap: () {
+                  setState(() {
+                    if (selectedAnswer == correctAnswer) {
+                      isCorrect = true;
+                    } else {
+                      isWrong = true;
+                    }
+                    hasChecked = !hasChecked;
+                  });
+                  if (hasChecked) {
+                    TtsService.speak(selectedAnswer!);
+                  }
                   print("Selected answer = $selectedAnswer");
                 },
               ),
