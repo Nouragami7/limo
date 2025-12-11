@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
+import '../../../../core/components/answer_result_section.dart';
 import '../../../../core/components/custom_btn_continue.dart';
 import '../../../../core/components/custom_sound.dart';
 import '../../../../core/components/progressBar.dart';
@@ -57,7 +58,8 @@ class _QuestionType2ScreenState extends State<QuestionType2Screen> {
 
                   const SizedBox(height: 10),
 
-                  AnswersGridType2( disabled: hasChecked,
+                  AnswersGridType2(
+                    disabled: hasChecked,
                     isWrong: isWrong,
                     onTap: (s) {
                       setState(() {

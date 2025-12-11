@@ -6,6 +6,7 @@ class AnswerCardWithPhoto extends StatefulWidget {
   final String label;
   final String? image;
   final bool isSelected;
+  final bool isWrong;
 
   final Function(String option) onTap;
 
@@ -15,6 +16,7 @@ class AnswerCardWithPhoto extends StatefulWidget {
     this.image,
     required this.isSelected,
     required this.onTap,
+    required this.isWrong,
 
   });
   @override
@@ -35,10 +37,14 @@ class _AnswerCardWithPhotoState extends State<AnswerCardWithPhoto> {
       child: Container(
         padding: const EdgeInsets.symmetric( vertical: 10),
         decoration: BoxDecoration(
-          color: widget.isSelected ? AppColors.hoverBG: Colors.white,
+          color: widget.isSelected
+              ? (widget.isWrong ? AppColors.errorBg : AppColors.hoverBG)
+              : Colors.white,
           borderRadius: BorderRadius.circular(16),
 border: Border.all(
-  color:widget.isSelected ? AppColors.mainColor : AppColors.color300,
+  color:widget.isSelected
+      ? (widget.isWrong ? Colors.red : AppColors.mainColor)
+      : AppColors.color300,
   width: 2,
 ),
         ),
@@ -58,7 +64,9 @@ border: Border.all(
             Text(
               widget.label,
               style: TextStyle(
-                color:AppColors.color700,
+                color: widget.isSelected
+                    ? (widget.isWrong ? Colors.red : AppColors.color700)
+                    : AppColors.color700,
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
 

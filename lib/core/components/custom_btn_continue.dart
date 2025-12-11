@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
   final double borderRadius;
 
 
-  const CustomButton({
+  const CustomButton( {
     super.key,
     required this.text,
     required this.isEnabled,
