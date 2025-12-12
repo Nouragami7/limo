@@ -4,8 +4,6 @@ import '../constants/colors.dart';
 class ProgressBar extends StatelessWidget {
   final double progress;
   final String question;
-
-
   const ProgressBar({super.key, required this.progress, required this.question});
 
   @override
@@ -15,7 +13,6 @@ class ProgressBar extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-
           Row(
             children: [
               Expanded(
@@ -84,7 +81,6 @@ class ProgressBar extends StatelessWidget {
                    letterSpacing: 0.3
                )
            )
-
         ],
       ),
     );

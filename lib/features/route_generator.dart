@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:limo/features/translation1/presentation/screen/questionType2Screen.dart';
 
 import '../core/utils/AppRoute.dart';
 import 'listening1/presentation/screen/questionType1Screen.dart';
-import 'listening2/presentation/screen/questionType2Screen.dart';
+import 'listening2/presentation/screen/questionType1_2Screen.dart';
 
 
 class RouteGenerator{
@@ -21,7 +22,10 @@ class RouteGenerator{
         //     case AppRoute.login:
         //       return MaterialPageRoute(builder: (context)=> LoginScreen());
             case AppRoute.screen2:
+              return MaterialPageRoute(builder: (context)=> QuestionType12Screen());
+              case AppRoute.screen3:
               return MaterialPageRoute(builder: (context)=> QuestionType2Screen());
+
 
 
       default:

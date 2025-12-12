@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
-import 'package:limo/features/listening2/presentation/screen/questionType1_2Screen.dart';
 import '../../../../core/components/answer_result_section.dart';
 import '../../../../core/components/custom_btn_continue.dart';
 import '../../../../core/components/custom_sound.dart';
 import '../../../../core/components/progressBar.dart';
-import '../../../../core/components/question_text_with_speaker.dart';
 import '../../../../core/constants/colors.dart';
-import '../../../../core/utils/navigation_functions.dart';
 import '../../../../core/utils/tts_service.dart';
-import '../widgets/answerCardWithPhoto.dart';
+import '../widgets/answersGrid.dart';
 
-class QuestionType1Screen extends StatefulWidget {
-  const QuestionType1Screen({super.key});
+
+class QuestionType12Screen extends StatefulWidget {
+  const QuestionType12Screen({super.key});
 
   @override
-  State<QuestionType1Screen> createState() => _QuestionType1ScreenState();
+  State<QuestionType12Screen> createState() => _QuestionType12ScreenState();
 }
 
-class _QuestionType1ScreenState extends State<QuestionType1Screen> {
+class _QuestionType12ScreenState extends State<QuestionType12Screen> {
   String? selectedAnswer;
   bool isCorrect = false;
   bool isWrong = false;
@@ -30,34 +28,46 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      TtsService.speak("coffee");
+      TtsService.speak("a");
     });
   }
+
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
           children: [
+
             Positioned.fill(
               child: Column(
-                  children: [
-                  ProgressBar(progress: 0.2, question: "اختر الاجابة الصحيحة"),
-              Padding(
-                padding: const EdgeInsets.only(right: 25.0),
-                child: QuestionTextWithSpeaker(text: "قهوة",speakerWord: "coffee"),
-              ),
-              SizedBox(height: 15),
-              AnswersGrid(
-                disabled: hasChecked,
-                isWrong: isWrong,
-                onTap: (s) {
-                  setState(() {
-                    selectedAnswer = s;
-                  });
-                },
-              )
-                  ]
+                children: [
+                  ProgressBar(progress: 0.7, question: "ترجم تلك الكلمة"),
+
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: CustomSoundButton(
+                      width: 100,
+                      height: 100,
+                      iconSize: 60,
+                      text: "a",
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  AnswersGridType2(
+                    disabled: hasChecked,
+                    isWrong: isWrong,
+                    onTap: (s) {
+                      setState(() {
+                        selectedAnswer = s;
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
             if (isCorrect || isWrong)
@@ -83,7 +93,6 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
                 text: hasChecked ? "استمر" : "تحقق",
                 isEnabled: selectedAnswer != null,
                 onTap: () {
-                  if (!hasChecked) {
                   setState(() {
                     if (selectedAnswer == correctAnswer) {
                       isCorrect = true;
@@ -91,16 +100,18 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
                       isWrong = true;
                     }
                     hasChecked = !hasChecked;
-                  });}else{ NavigationFunctions.navigateWithSlide(context, const QuestionType12Screen());
-              }}
-                ,
+                  });
+                  if (hasChecked) {
+                    TtsService.speak(selectedAnswer!);
+                  }
+                  print("Selected answer = $selectedAnswer");
+                },
               ),
             ),
-
           ],
         ),
       ),
     );
-
   }
 }
+
