@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
+import '../../../../core/components/answer_result_section.dart';
 import '../../../../core/components/custom_btn_continue.dart';
 import '../../../../core/components/custom_sound.dart';
 import '../../../../core/components/progressBar.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/utils/navigation_functions.dart';
 import '../../../../core/utils/tts_service.dart';
+import '../../../translation1/presentation/screen/questionType2Screen.dart';
 import '../widgets/answersGrid.dart';
 
 
-class QuestionType2Screen extends StatefulWidget {
-  const QuestionType2Screen({super.key});
+class QuestionType12Screen extends StatefulWidget {
+  const QuestionType12Screen({super.key});
 
   @override
-  State<QuestionType2Screen> createState() => _QuestionType2ScreenState();
+  State<QuestionType12Screen> createState() => _QuestionType12ScreenState();
 }
 
-class _QuestionType2ScreenState extends State<QuestionType2Screen> {
+class _QuestionType12ScreenState extends State<QuestionType12Screen> {
   String? selectedAnswer;
+  bool isCorrect = false;
+  bool isWrong = false;
+  String correctAnswer = "a";
+  String selected = "";
+  bool hasChecked = false;
 
   @override
   void initState() {
@@ -25,6 +33,7 @@ class _QuestionType2ScreenState extends State<QuestionType2Screen> {
       TtsService.speak("a");
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +45,7 @@ class _QuestionType2ScreenState extends State<QuestionType2Screen> {
             Positioned.fill(
               child: Column(
                 children: [
-                  ProgressBar(progress: 0.4, question: "ما الذي تسمعه ؟"),
+                  ProgressBar(progress: 0.7, question: "ترجم تلك الكلمة"),
 
                   Container(
                     width: double.infinity,
@@ -52,6 +61,8 @@ class _QuestionType2ScreenState extends State<QuestionType2Screen> {
                   const SizedBox(height: 10),
 
                   AnswersGridType2(
+                    disabled: hasChecked,
+                    isWrong: isWrong,
                     onTap: (s) {
                       setState(() {
                         selectedAnswer = s;
@@ -61,16 +72,39 @@ class _QuestionType2ScreenState extends State<QuestionType2Screen> {
                 ],
               ),
             ),
-
+            if (isCorrect || isWrong)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: AnswerResultSection(
+                  isCorrect: isCorrect,
+                  isWrong: isWrong,
+                  correctAnswer: correctAnswer,
+                  onTap: () {
+                    setState(() { hasChecked = !hasChecked;
+                    });
+                  },
+                ),
+              ),
             Positioned(
               left: 0,
               right: 0,
-              bottom: 30,
+              bottom: 25,
               child: CustomButton(
-                text: "تحقق",
+                text: hasChecked ? "استمر" : "تحقق",
                 isEnabled: selectedAnswer != null,
                 onTap: () {
-                  print("Selected answer = $selectedAnswer");
+                  if (!hasChecked) {
+                    setState(() {
+                      if (selectedAnswer == correctAnswer) {
+                        isCorrect = true;
+                      } else {
+                        isWrong = true;
+                      }
+                      hasChecked = !hasChecked;
+                    });}else{ NavigationFunctions.navigateWithSlide(context, const QuestionType2Screen());
+                  }
                 },
               ),
             ),

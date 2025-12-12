@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
-import 'package:limo/features/listening2/presentation/screen/questionType2Screen.dart';
+import 'package:limo/features/listening12/presentation/screen/questionType1_2Screen.dart';
+import '../../../../core/components/answer_result_section.dart';
 import '../../../../core/components/custom_btn_continue.dart';
 import '../../../../core/components/custom_sound.dart';
 import '../../../../core/components/progressBar.dart';
+import '../../../../core/components/question_text_with_speaker.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/navigation_functions.dart';
 import '../../../../core/utils/tts_service.dart';
@@ -18,6 +20,11 @@ class QuestionType1Screen extends StatefulWidget {
 
 class _QuestionType1ScreenState extends State<QuestionType1Screen> {
   String? selectedAnswer;
+  bool isCorrect = false;
+  bool isWrong = false;
+  String correctAnswer = "Coffee";
+  String selected = "";
+  bool hasChecked = false;
 
   @override
   void initState() {
@@ -38,39 +45,12 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
                   ProgressBar(progress: 0.2, question: "اختر الاجابة الصحيحة"),
               Padding(
                 padding: const EdgeInsets.only(right: 25.0),
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                Text(
-                "قهوة",
-                style: const TextStyle(
-                fontFamily: 'Cairo',
-                fontSize: 24,
-                  decoration: TextDecoration.underline,
-                  decorationStyle: TextDecorationStyle.dotted,
-                  decorationThickness: 1,
-                fontWeight: FontWeight.w600,
-                color: AppColors.color700,
-                ),
-                textDirection: TextDirection.rtl,
-                ),
-
-                const SizedBox(width: 12),
-
-
-                 CustomSoundButton(
-                  width: 30,
-                  height: 30,
-                  iconSize: 17,
-                  text: "Coffee",
-                ),
-
-
-                ],
-                ),
+                child: QuestionTextWithSpeaker(text: "قهوة",speakerWord: "coffee"),
               ),
               SizedBox(height: 15),
               AnswersGrid(
+                disabled: hasChecked,
+                isWrong: isWrong,
                 onTap: (s) {
                   setState(() {
                     selectedAnswer = s;
@@ -80,16 +60,40 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
                   ]
               ),
             ),
+            if (isCorrect || isWrong)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: AnswerResultSection(
+                  isCorrect: isCorrect,
+                  isWrong: isWrong,
+                  correctAnswer: correctAnswer,
+                  onTap: () {
+                    setState(() { hasChecked = !hasChecked;
+                    });
+                  },
+                ),
+              ),
             Positioned(
               left: 0,
               right: 0,
-              bottom: 30,
+              bottom: 25,
               child: CustomButton(
-                text: "تحقق",
+                text: hasChecked ? "استمر" : "تحقق",
                 isEnabled: selectedAnswer != null,
                 onTap: () {
-                  NavigationFunctions.navigateWithSlide(context, QuestionType2Screen());
-                },
+                  if (!hasChecked) {
+                  setState(() {
+                    if (selectedAnswer == correctAnswer) {
+                      isCorrect = true;
+                    } else {
+                      isWrong = true;
+                    }
+                    hasChecked = !hasChecked;
+                  });}else{ NavigationFunctions.navigateWithSlide(context, const QuestionType12Screen());
+              }}
+                ,
               ),
             ),
 
