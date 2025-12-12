@@ -3,7 +3,7 @@ import 'package:limo/features/translation1/presentation/screen/questionType2Scre
 
 import '../core/utils/AppRoute.dart';
 import 'listening1/presentation/screen/questionType1Screen.dart';
-import 'listening2/presentation/screen/questionType1_2Screen.dart';
+import 'listening12/presentation/screen/questionType1_2Screen.dart';
 
 
 class RouteGenerator{

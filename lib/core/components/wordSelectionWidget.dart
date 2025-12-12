@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../features/translation1/data/models/word.dart';
+import '../../data/model/word.dart';
 import '../constants/colors.dart';
 import '../utils/translationInputController.dart';
 class WordSelectionWidget extends StatelessWidget {
   final TranslationInputController controller;
   final bool isLocked;
-  const WordSelectionWidget({super.key, required this.controller,required this.isLocked});
+  final bool isArabic;
+  const WordSelectionWidget({super.key, required this.controller,required this.isLocked,this.isArabic = false});
 
   Widget _buildSelectedWordChip(Word word) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: GestureDetector(
-        onTap: isLocked ? null : () => controller.removeWordFromAnswer(word),        child: Container(
+        onTap: isLocked ? null : () => controller.removeWordFromAnswer(word),
+        child: Container(
           key: word.key,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
@@ -46,11 +48,13 @@ class WordSelectionWidget extends StatelessWidget {
 
   Widget _buildWordBubble(Word word) { final bool canTap = !isLocked;
     return InkWell(
-      onTap: canTap ? () => controller.addWordToAnswer(word) : null,      child: Container(
+      onTap: canTap ? () => controller.addWordToAnswer(word) : null,
+      child: Container(
         key: word.key,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         decoration: BoxDecoration(
-          color: isLocked ? Colors.grey[200] : Colors.white,          borderRadius: BorderRadius.circular(10),
+          color: isLocked ? Colors.grey[200] : Colors.white,
+          borderRadius: BorderRadius.circular(10),
           boxShadow: const [
             BoxShadow(
               color:AppColors.color200,
@@ -88,7 +92,7 @@ class WordSelectionWidget extends StatelessWidget {
     const double totalStackHeight = chipsAreaHeight + separatorHeight + 5.0;
 
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: isArabic ? TextDirection.ltr :TextDirection.rtl,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: SizedBox(
@@ -145,7 +149,7 @@ class WordSelectionWidget extends StatelessWidget {
               child: _buildAnswerLines(controller),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 70),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -162,3 +166,5 @@ class WordSelectionWidget extends StatelessWidget {
     );
   }
 }
+
+

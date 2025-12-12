@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:limo/core/components/question_message_shape.dart';
 import 'package:limo/core/utils/navigation_functions.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
-import 'package:limo/features/listeningbubbles/presentation/screen/questionType5Screen.dart';
 import '../../../../core/components/answer_result_section.dart';
 import '../../../../core/components/custom_btn_continue.dart';
 import '../../../../core/components/custom_sound.dart';
 import '../../../../core/components/progressBar.dart';
+import '../../../../core/components/slow_speech_sound_container.dart';
 import '../../../../core/components/wordSelectionWidget.dart';
 import '../../../../core/constants/assets.dart';
 import '../../../../core/constants/colors.dart';
@@ -17,16 +17,16 @@ import '../../../listening12/presentation/widgets/answersGrid.dart';
 import '../../../../data/model/word.dart';
 
 
-class QuestionType2Screen extends StatefulWidget {
-  const QuestionType2Screen({super.key});
+class QuestionType5Screen extends StatefulWidget {
+  const QuestionType5Screen({super.key});
 
   @override
-  State<QuestionType2Screen> createState() => _QuestionType12ScreenState();
+  State<QuestionType5Screen> createState() => _QuestionType5ScreenState();
 }
 
-class _QuestionType12ScreenState extends State<QuestionType2Screen> {
-  final String correctFullAnswer ="مرحبًا كيف حالك";
-  String question = "Hello,how are you?";
+class _QuestionType5ScreenState extends State<QuestionType5Screen> {
+  final String correctFullAnswer ="Hello how are you";
+  String question = "Hello,how are ";
   bool isCorrect = false;
   bool isWrong = false;
   String selected = "";
@@ -37,11 +37,11 @@ class _QuestionType12ScreenState extends State<QuestionType2Screen> {
   void initState() {
     super.initState();
     final initialWords = [
-      Word('من'), Word('فضلك'), Word('مرحبًا'), Word('قهوة'), Word('شاي'),Word('كيف'), Word('حالك')
+      Word('hello'), Word('how'), Word('are'), Word('you'), Word('day'),Word('today'), Word('bear')
     ];
     _inputController = TranslationInputController(initialWords: initialWords);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      TtsService.speak(question);
+      TtsService.speak(correctFullAnswer);
     });
     @override
     void dispose() {
@@ -53,7 +53,7 @@ class _QuestionType12ScreenState extends State<QuestionType2Screen> {
   void _checkAnswer() {
     final userSentence = _inputController.selectedWords.map((word) => word.text).join(' ');
 
-    final bool isAnswerCorrect = userSentence == correctFullAnswer;
+    final bool isAnswerCorrect = userSentence.toLowerCase() == correctFullAnswer.toLowerCase();
 
     setState(() {
       if (isAnswerCorrect) {
@@ -83,28 +83,32 @@ class _QuestionType12ScreenState extends State<QuestionType2Screen> {
             Positioned.fill(
               child: Column(
                 children: [
-                  ProgressBar(progress: 0.7, question: "ترجم تلك الكلمة"),
+                  ProgressBar(progress: 0.9, question: "انقر على ما تسمعه"),
                   Padding(
                     padding: const EdgeInsets.only(right: 15.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ChatBubble(
-                          text: question,
-                          iconColor: AppColors.mainColor,
-                          onSoundTap: () {TtsService.speak(question);},
-                        ),
+                    CustomSoundButton(
+                      width: 150,
+                      height: 150,
+                      iconSize: 80,
+                      text: correctFullAnswer,
+                    ),
+SizedBox(width: 20,),
+CustomSlowSoundButton(
+  width: 80,
+  height: 80,
+  iconSize: 45,
+  text: correctFullAnswer,
+),
                         const SizedBox(width: 10),
-                        Image.asset(
-                          Assets.limoImg,
-                          height: 120,
-                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  WordSelectionWidget(controller: _inputController, isLocked: hasChecked),
+                  const SizedBox(height: 70),
+                 WordSelectionWidget(controller: _inputController, isLocked: hasChecked, isArabic:true),
 
                   const SizedBox(height: 30),
                 ],
@@ -154,7 +158,7 @@ class _QuestionType12ScreenState extends State<QuestionType2Screen> {
                           hasChecked = false;
                         });
 
-                        NavigationFunctions.navigateWithSlide(context, const QuestionType5Screen());
+                        NavigationFunctions.navigateWithSlide(context, const QuestionType1Screen());
 
                       } else {
                         _checkAnswer();

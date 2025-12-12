@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../features/translation1/data/models/word.dart';
+import '../../data/model/word.dart';
 
 class TranslationInputController extends ChangeNotifier {
   final List<Word> _initialPool;
@@ -41,6 +41,10 @@ class TranslationInputController extends ChangeNotifier {
     _selectedWords.clear();
     _availableWords.clear();
     _availableWords.addAll(_initialPool);
+    notifyListeners();
+  }
+  void clear() {
+    selectedWords.clear();
     notifyListeners();
   }
 }
