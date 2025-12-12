@@ -34,4 +34,13 @@ class TranslationInputController extends ChangeNotifier {
     });
     notifyListeners();
   }
+  void resetForNextQuestion(List<Word> newWords) {
+    _initialPool.clear();
+    _initialPool.addAll(newWords);
+
+    _selectedWords.clear();
+    _availableWords.clear();
+    _availableWords.addAll(_initialPool);
+    notifyListeners();
+  }
 }

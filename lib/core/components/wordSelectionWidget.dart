@@ -5,15 +5,14 @@ import '../constants/colors.dart';
 import '../utils/translationInputController.dart';
 class WordSelectionWidget extends StatelessWidget {
   final TranslationInputController controller;
-
-  const WordSelectionWidget({super.key, required this.controller});
+  final bool isLocked;
+  const WordSelectionWidget({super.key, required this.controller,required this.isLocked});
 
   Widget _buildSelectedWordChip(Word word) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: GestureDetector(
-        onTap: () => controller.removeWordFromAnswer(word),
-        child: Container(
+        onTap: isLocked ? null : () => controller.removeWordFromAnswer(word),        child: Container(
           key: word.key,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
@@ -45,15 +44,13 @@ class WordSelectionWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildWordBubble(Word word) {
+  Widget _buildWordBubble(Word word) { final bool canTap = !isLocked;
     return InkWell(
-      onTap: () => controller.addWordToAnswer(word),
-      child: Container(
+      onTap: canTap ? () => controller.addWordToAnswer(word) : null,      child: Container(
         key: word.key,
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          color: isLocked ? Colors.grey[200] : Colors.white,          borderRadius: BorderRadius.circular(10),
           boxShadow: const [
             BoxShadow(
               color:AppColors.color200,
@@ -61,7 +58,7 @@ class WordSelectionWidget extends StatelessWidget {
               blurRadius: 6,
             ),
             BoxShadow(
-              color: AppColors.color700,
+              color: AppColors.color300,
               offset: Offset(0, 3),
             ),
           ],

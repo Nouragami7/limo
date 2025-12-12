@@ -22,7 +22,7 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
   String? selectedAnswer;
   bool isCorrect = false;
   bool isWrong = false;
-  String correctAnswer = "a";
+  String correctAnswer = "Coffee";
   String selected = "";
   bool hasChecked = false;
 

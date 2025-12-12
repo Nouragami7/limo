@@ -5,7 +5,9 @@ import '../../../../core/components/custom_btn_continue.dart';
 import '../../../../core/components/custom_sound.dart';
 import '../../../../core/components/progressBar.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/utils/navigation_functions.dart';
 import '../../../../core/utils/tts_service.dart';
+import '../../../translation1/presentation/screen/questionType2Screen.dart';
 import '../widgets/answersGrid.dart';
 
 
@@ -93,18 +95,16 @@ class _QuestionType12ScreenState extends State<QuestionType12Screen> {
                 text: hasChecked ? "استمر" : "تحقق",
                 isEnabled: selectedAnswer != null,
                 onTap: () {
-                  setState(() {
-                    if (selectedAnswer == correctAnswer) {
-                      isCorrect = true;
-                    } else {
-                      isWrong = true;
-                    }
-                    hasChecked = !hasChecked;
-                  });
-                  if (hasChecked) {
-                    TtsService.speak(selectedAnswer!);
+                  if (!hasChecked) {
+                    setState(() {
+                      if (selectedAnswer == correctAnswer) {
+                        isCorrect = true;
+                      } else {
+                        isWrong = true;
+                      }
+                      hasChecked = !hasChecked;
+                    });}else{ NavigationFunctions.navigateWithSlide(context, const QuestionType2Screen());
                   }
-                  print("Selected answer = $selectedAnswer");
                 },
               ),
             ),
