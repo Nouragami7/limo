@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:limo/features/auth/presentation/screen/login_screen.dart';
 
+import '../core/app/splash_screen.dart';
 import '../core/utils/AppRoute.dart';
+import 'auth/presentation/screen/signup_screen.dart';
 import 'listening1/presentation/screen/questionType1Screen.dart';
 import 'listening2/presentation/screen/questionType2Screen.dart';
 
@@ -20,8 +23,15 @@ class RouteGenerator{
         //   return MaterialPageRoute(builder: (context)=> BlocProvider(create: (_)=> HomeCubit(Repo(newsService: MealsService(), dbHelper: DataBaseHelper())),child: HomeScreen()));
         //     case AppRoute.login:
         //       return MaterialPageRoute(builder: (context)=> LoginScreen());
+
             case AppRoute.screen2:
               return MaterialPageRoute(builder: (context)=> QuestionType2Screen());
+            case AppRoute.splash:
+              return MaterialPageRoute(builder: (context)=> SplashScreen());
+            case AppRoute.signup:
+              return MaterialPageRoute(builder: (context)=> SignUpScreen());
+            case AppRoute.login:
+              return MaterialPageRoute(builder: (context)=> LoginScreen());
 
 
       default:
