@@ -9,6 +9,13 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  flutter_svg: ^2.2.3
+  flutter_screenutil: ^5.9.3
+  firebase_core: ^4.2.1
+  cloud_firestore: ^6.1.0
+  flutter_tts: ^4.2.3
+  flutter_chat_bubble: ^2.0.2
+  chat_bubbles: ^1.7.0
 
 dev_dependencies:
   flutter_test:

@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 
+import '../../features/listening1/presentation/screen/questionType1Screen.dart';
+import '../../features/route_generator.dart';
+import '../utils/AppRoute.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          "Hello Limo",
-          style: TextStyle(fontSize: 28),
-        ),
-      ),
+    return MaterialApp(
+      initialRoute: AppRoute.screen1 ,// change this to the first screen you want to show
+      onGenerateRoute: RouteGenerator.generateRoute,
+      //note : to naviigate from page to page use :
+      //Navigator.pushNamed(context, "/signup");
+      debugShowCheckedModeBanner: false,
+      //  home:  SplashScreen(),  --->  //we will use it in the future
     );
   }
 }
-
-
-
-
-
-
 
