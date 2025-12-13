@@ -26,7 +26,11 @@ class QuestionFlowCubit extends Cubit<QuestionFlowState> {
     emit(QuestionFlowLoading());
     questions = await repo.getAllRawQuestions();
     index = 0;
-    _emitCurrentQuestion();
+    if (questions.isEmpty) {
+      emit(QuestionFlowFinished());
+    } else {
+      _emitCurrentQuestion();
+    }
   }
 
   void next() {
@@ -42,7 +46,7 @@ class QuestionFlowCubit extends Cubit<QuestionFlowState> {
 
   void previous() {
     if (index > 0) {
-      direction = SlideDirection.right; // 👉 move right
+      direction = SlideDirection.right;
       index--;
       _emitCurrentQuestion();
     }

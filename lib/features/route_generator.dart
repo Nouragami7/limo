@@ -6,6 +6,7 @@ import 'package:limo/features/questions_route/cubit/question_flow_cubit.dart';
 import 'package:limo/features/translation1/presentation/screen/questionType2Screen.dart';
 import '../core/app/splash_screen.dart';
 import '../core/utils/AppRoute.dart';
+import 'home/presentation/screen/home_screen.dart';
 import 'questions_route/repo/questions_repo.dart';
 
 import 'auth/presentation/screen/signup_screen.dart';
@@ -31,6 +32,9 @@ class RouteGenerator{
               return MaterialPageRoute(builder: (context)=> SignUpScreen());
             case AppRoute.login:
               return MaterialPageRoute(builder: (context)=> LoginScreen());
+      case AppRoute.home:
+        return MaterialPageRoute(builder: (context)=> HomeScreen());
+
 
 
 

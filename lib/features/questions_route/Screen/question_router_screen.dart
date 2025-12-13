@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
+import '../../../core/utils/AppRoute.dart';
 import '../../../data/model/question.dart';
 import '../../../features/listening1/data/models/question1_model.dart';
 import '../../../features/listening1/presentation/screen/questionType1Screen.dart';
@@ -21,6 +22,10 @@ class QuestionRouterScreen extends StatelessWidget {
     return BlocBuilder<QuestionFlowCubit, QuestionFlowState>(
       buildWhen: (prev, curr) => curr is! QuestionFlowLoading,
       builder: (context, state) {
+        if (state is QuestionFlowFinished) {
+          Navigator.pushReplacementNamed(context, AppRoute.home);
+        }
+
         if (state is QuestionFlowLoading) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
