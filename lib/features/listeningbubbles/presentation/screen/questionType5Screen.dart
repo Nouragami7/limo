@@ -15,6 +15,7 @@ import '../../../../core/utils/tts_service.dart';
 import '../../../listening1/presentation/screen/questionType1Screen.dart';
 import '../../../listening12/presentation/widgets/answersGrid.dart';
 import '../../../../data/model/word.dart';
+import '../../../matching_pairs/presentation/screen/questionType6Screen.dart';
 
 
 class QuestionType5Screen extends StatefulWidget {
@@ -158,7 +159,7 @@ CustomSlowSoundButton(
                           hasChecked = false;
                         });
 
-                        NavigationFunctions.navigateWithSlide(context, const QuestionType1Screen());
+                        NavigationFunctions.navigateWithSlide(context, const QuestionType6Screen());
 
                       } else {
                         _checkAnswer();
