@@ -107,11 +107,11 @@ CustomSlowSoundButton(
   iconSize: 45,
   text: correctFullAnswer,
 ),
-                        const SizedBox(width: 10),
+                     //   const SizedBox(width: 10),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 70),
+                  const SizedBox(height: 10),
                  WordSelectionWidget(controller: _inputController, isLocked: hasChecked, isArabic:true),
 
                   const SizedBox(height: 30),

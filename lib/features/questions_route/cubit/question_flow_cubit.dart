@@ -5,6 +5,7 @@ import 'package:limo/features/questions_route/cubit/question_flow_state.dart';
 
 import '../../../data/model/question.dart';
 import '../../listeningbubbles/data/models/question_type5_model.dart';
+import '../../matching_pairs/data/models/question_type6model.dart';
 import '../repo/questions_repo.dart';
 import '../../../features/listening1/data/models/question1_model.dart';
 import '../../../features/listening12/data/models/question12_model.dart';
@@ -83,6 +84,12 @@ class QuestionFlowCubit extends Cubit<QuestionFlowState> {
           direction,
         ));
         break;
+        case "TYPE6":
+        emit(ShowQuestionType6(
+          QuestionType6Model.fromFirestore(data),
+          direction,
+        ));
+
       default:
         emit(QuestionFlowError("Unknown question type"));
     }

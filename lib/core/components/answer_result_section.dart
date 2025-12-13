@@ -30,13 +30,15 @@ class AnswerResultSection extends StatelessWidget {
 
     String resultText = "";
     if (isCorrect) resultText ="عمل رائع";
-    if (isWrong) resultText = " $correctAnswer : الإجابة الصحيحة ";
+    if (isWrong) {
+      resultText = "الإجابة الصحيحة:\n$correctAnswer";
+    }
 
     return Column(
       children: [
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          height: 150,
+          height: isWrong ? 190 : 150,
           width: double.infinity,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(

@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
 import '../../../../core/components/answer_result_section.dart';
 import '../../../../core/components/custom_btn_continue.dart';
 import '../../../../core/components/custom_sound.dart';
 import '../../../../core/components/progressBar.dart';
+
 import '../../../../core/constants/colors.dart';
-import '../../../../core/utils/navigation_functions.dart';
-import '../../../../core/utils/tts_service.dart';
-import '../../../translation1/presentation/screen/questionType2Screen.dart';
+import '../../../questions_route/cubit/question_flow_cubit.dart';
+
 import '../../data/models/pair.dart';
+import '../../data/models/question_type6model.dart';
 import '../widgets/answersGrid.dart';
 
 
 class QuestionType6Screen extends StatefulWidget {
-  const QuestionType6Screen({super.key});
+  final QuestionType6Model model;
+  const QuestionType6Screen({super.key,required this.model});
 
   @override
   State<QuestionType6Screen> createState() => _QuestionType6ScreenState();
@@ -25,14 +28,17 @@ class _QuestionType6ScreenState extends State<QuestionType6Screen> {
   bool isWrong = false;
   late List<String> englishWords;
   late List<String> arabicWords;
+  String? selectedEn;
+  String? selectedAr;
+  bool hasAnyCorrectMatch = false;
+  bool showCorrectAnswers = false;
+  String correctAnswerText = "";
 
-  final List<Pair> pairs = [
-    Pair(en: "Milk", ar: "حليب"),
-    Pair(en: "Tea", ar: "شاي"),
-    Pair(en: "Coffee", ar: "قهوة"),
-    Pair(en: "Water", ar: "ماء"),
-    Pair(en: "Hello", ar: "هاي"),
-  ];
+  Set<String> correctItems = {};
+  Set<String> wrongItems = {};
+
+  bool checking = false;
+  late final List<PairWords> pairs = widget.model.pairs;
 
 
   String selected = "";
@@ -44,39 +50,94 @@ class _QuestionType6ScreenState extends State<QuestionType6Screen> {
     englishWords = pairs.map((p) => p.en).toList()..shuffle();
     arabicWords = pairs.map((p) => p.ar).toList()..shuffle();
   }
-  String? selectedEn;
-  String? selectedAr;
+  String buildRemainingPairsText() {
+    return pairs
+        .where((p) =>
+    englishWords.contains(p.en) ||
+        arabicWords.contains(p.ar))
+        .map((p) => '${p.en} = ${p.ar}')
+        .join(' , ');
+  }
+  String buildCorrectAnswerText() {
+    return pairs
+        .map((p) => '${p.en} = ${p.ar}')
+        .join('\n');
+  }
+
 
   bool isMatch() {
     if (selectedEn == null || selectedAr == null) return false;
     return pairs.any((p) => p.en == selectedEn && p.ar == selectedAr);
   }
-  void checkMatch() {
+  void checkMatch() async {
     if (isMatch()) {
-      englishWords.remove(selectedEn);
-      arabicWords.remove(selectedAr);
+      setState(() {
+        correctItems.add(selectedEn!);
+        correctItems.add(selectedAr!);
+        hasAnyCorrectMatch = true;
+      });
+
+      await Future.delayed(const Duration(milliseconds: 400));
+
+      setState(() {
+        englishWords.remove(selectedEn);
+        arabicWords.remove(selectedAr);
+      });
+    } else {
+      setState(() {
+        wrongItems.add(selectedEn!);
+        wrongItems.add(selectedAr!);
+      });
+
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      setState(() {
+        wrongItems.clear();
+      });
     }
 
     selectedEn = null;
     selectedAr = null;
-    setState(() {});
   }
-  Widget card(String text, bool selected, VoidCallback onTap) {
+
+  Widget card(String text, VoidCallback onTap) {
+    final isSelected = text == selectedEn || text == selectedAr;
+    final isCorrect = correctItems.contains(text);
+    final isWrong = wrongItems.contains(text);
+
+    Color bgColor = Colors.white;
+    Color borderColor = Colors.grey.shade300;
+    Color textColor = AppColors.color700;
+
+    if (isCorrect) {
+      bgColor = AppColors.hoverBG;
+      borderColor = AppColors.mainColor;
+      textColor = AppColors.color700;
+    } else if (isWrong) {
+      bgColor = AppColors.errorBg;
+      borderColor = Colors.red;
+      textColor = Colors.red;
+    } else if (isSelected) {
+      bgColor = AppColors.color200;
+      borderColor = AppColors.color700;
+      textColor = Colors.white;
+    }
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: (isCorrect || checking) ? null : onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 18),
+        padding: const EdgeInsets.symmetric(vertical: 18),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: selected ? Colors.teal : Colors.white,
+          color: bgColor,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey.shade300),
+          border: Border.all(color: borderColor, width: 2),
         ),
         child: Text(
           text,
           style: TextStyle(
             fontSize: 16,
-            color: selected ? Colors.white : Colors.black,
+            color: textColor,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -90,60 +151,79 @@ class _QuestionType6ScreenState extends State<QuestionType6Screen> {
       body: SafeArea(
         child: Stack(
           children: [
-
             Positioned.fill(
               child: Column(
                 children: [
                   ProgressBar(progress: 0.7, question: "انقر على الأزواج المتطابقة"),
+                  const SizedBox(height: 70),
                   Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ListView.separated(
-                            itemCount: englishWords.length,
-                            separatorBuilder: (_, __) => SizedBox(height: 12),
-                            itemBuilder: (_, index) {
-                              final word = englishWords[index];
-                              return card(
-                                word,
-                                selectedEn == word,
-                                    () {
-                                  selectedEn = word;
-                                  checkMatch();
-                                },
-                              );
-                            },
-                          ),
-                        ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ListView.separated(
+                              itemCount: englishWords.length,
+                              separatorBuilder: (_, __) => const SizedBox(height: 12),
+                              itemBuilder: (_, index) {
+                                final word = englishWords[index];
+                                return card(
+                                  word,
+                                      () {
+                                    if (selectedEn != null || checking) return;
 
-                        SizedBox(width: 16),
+                                    setState(() {
+                                      selectedEn = word;
+                                    });
 
-                        // Arabic column
-                        Expanded(
-                          child: ListView.separated(
-                            itemCount: arabicWords.length,
-                            separatorBuilder: (_, __) => SizedBox(height: 12),
-                            itemBuilder: (_, index) {
-                              final word = arabicWords[index];
-                              return card(
-                                word,
-                                selectedAr == word,
-                                    () {
-                                  selectedAr = word;
-                                  checkMatch();
-                                },
-                              );
-                            },
+                                    if (selectedAr != null) {
+                                      checkMatch();
+                                    }
+                                  },
+                                );
+
+
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+
+                          const SizedBox(width: 16),
+
+                          Expanded(
+                            child: ListView.separated(
+                              itemCount: arabicWords.length,
+                              separatorBuilder: (_, __) => const SizedBox(height: 12),
+                              itemBuilder: (_, index) {
+                                final word = arabicWords[index];
+                                return card(
+                                  word,
+                                      () {
+                                    if (selectedAr != null || checking) return;
+
+                                    setState(() {
+                                      selectedAr = word;
+                                    });
+
+                                    if (selectedEn != null) {
+                                      checkMatch();
+                                    }
+                                  },
+                                );
+
+
+
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
 
                 ],
               ),
             ),
-            if (isCorrect || isWrong)
+            if (hasChecked)
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -151,33 +231,41 @@ class _QuestionType6ScreenState extends State<QuestionType6Screen> {
                 child: AnswerResultSection(
                   isCorrect: isCorrect,
                   isWrong: isWrong,
-                  correctAnswer: "",
+                  correctAnswer: correctAnswerText,
                   onTap: () {
-                    setState(() { hasChecked = !hasChecked;
+                    setState(() {
+                      hasChecked = false;
                     });
                   },
                 ),
               ),
+
             Positioned(
               left: 0,
               right: 0,
               bottom: 25,
               child: CustomButton(
                 text: hasChecked ? "استمر" : "تحقق",
-                isEnabled: selectedAnswer != null,
+                isEnabled: hasAnyCorrectMatch,
                 onTap: () {
                   if (!hasChecked) {
                     setState(() {
-                      if (selectedAnswer == "") {
-                        isCorrect = true;
-                      } else {
+                      correctAnswerText = buildRemainingPairsText();
+                      if (correctAnswerText.isNotEmpty) {
+                        isCorrect = false;
                         isWrong = true;
+                      }else{
+                        isCorrect = true;
+                        isWrong = false;
                       }
-                      hasChecked = !hasChecked;
-                    });}else{
-                  };
+                      hasChecked = true;
 
+                    });
+                  } else {
+                    context.read<QuestionFlowCubit>().next();
+                  }
                 },
+
               ),
             ),
           ],

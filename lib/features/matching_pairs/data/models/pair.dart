@@ -1,6 +1,6 @@
-class Pair {
+class PairWords {
   final String en;
   final String ar;
 
-  Pair({required this.en, required this.ar});
+  PairWords({required this.en, required this.ar});
 }

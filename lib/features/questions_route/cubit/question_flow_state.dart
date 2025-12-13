@@ -4,6 +4,7 @@ import '../../../features/listening1/data/models/question1_model.dart';
 import '../../../features/listening12/data/models/question12_model.dart';
 import '../../../features/translation1/data/models/question2model.dart';
 import '../../listeningbubbles/data/models/question_type5_model.dart';
+import '../../matching_pairs/data/models/question_type6model.dart';
 import '../model/slide_direction.dart';
 
 abstract class QuestionFlowState {}
@@ -43,6 +44,14 @@ class ShowQuestionType5 extends QuestionFlowState {
   final SlideDirection direction;
 
   ShowQuestionType5(this.model,this.direction);
+
+
+}
+class ShowQuestionType6 extends QuestionFlowState {
+  late final QuestionType6Model model;
+  final SlideDirection direction;
+
+  ShowQuestionType6(this.model,this.direction);
 
 
 }
