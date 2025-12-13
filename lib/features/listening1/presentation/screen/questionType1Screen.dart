@@ -10,7 +10,8 @@ import '../../../../core/components/question_text_with_speaker.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/navigation_functions.dart';
 import '../../../../core/utils/tts_service.dart';
-import '../../../../domain/question_flow_cubit.dart';
+import '../../../questions_route/Screen/question_router_screen.dart';
+import '../../../questions_route/cubit/question_flow_cubit.dart';
 import '../../data/models/question1_model.dart';
 import '../widgets/answerCardWithPhoto.dart';
 

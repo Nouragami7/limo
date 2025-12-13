@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:limo/core/components/question_message_shape.dart';
 import 'package:limo/core/utils/navigation_functions.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
@@ -16,18 +17,22 @@ import '../../../listening1/presentation/screen/questionType1Screen.dart';
 import '../../../listening12/presentation/widgets/answersGrid.dart';
 import '../../../../data/model/word.dart';
 import '../../../matching_pairs/presentation/screen/questionType6Screen.dart';
+import '../../../questions_route/cubit/question_flow_cubit.dart';
+import '../../data/models/question_type5_model.dart';
 
 
 class QuestionType5Screen extends StatefulWidget {
-  const QuestionType5Screen({super.key});
+  final QuestionType5Model model;
+
+  const QuestionType5Screen({super.key,required this.model});
 
   @override
   State<QuestionType5Screen> createState() => _QuestionType5ScreenState();
 }
 
 class _QuestionType5ScreenState extends State<QuestionType5Screen> {
-  final String correctFullAnswer ="Hello how are you";
-  String question = "Hello,how are ";
+  late final String correctFullAnswer =widget.model.correctFullAnswer;
+  late String question = widget.model.question;
   bool isCorrect = false;
   bool isWrong = false;
   String selected = "";
@@ -37,9 +42,7 @@ class _QuestionType5ScreenState extends State<QuestionType5Screen> {
   @override
   void initState() {
     super.initState();
-    final initialWords = [
-      Word('hello'), Word('how'), Word('are'), Word('you'), Word('day'),Word('today'), Word('bear')
-    ];
+    final initialWords = widget.model.initialWords;
     _inputController = TranslationInputController(initialWords: initialWords);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       TtsService.speak(correctFullAnswer);
@@ -158,8 +161,8 @@ CustomSlowSoundButton(
                           isWrong = false;
                           hasChecked = false;
                         });
-
-                        NavigationFunctions.navigateWithSlide(context, const QuestionType6Screen());
+context.read<QuestionFlowCubit>().next();
+                     //   NavigationFunctions.navigateWithSlide(context, const QuestionType6Screen());
 
                       } else {
                         _checkAnswer();

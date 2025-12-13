@@ -6,9 +6,10 @@ import '../../../../core/constants/assets.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/AppRoute.dart';
 import '../../../../core/utils/validators.dart';
-import '../../../../data/repositories/questions_repo.dart';
-import '../../../../domain/question_flow_cubit.dart';
-import '../../../../domain/question_router_screen.dart';
+import '../../../questions_route/repo/questions_repo.dart';
+
+import '../../../questions_route/Screen/question_router_screen.dart';
+import '../../../questions_route/cubit/question_flow_cubit.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 import '../widgets/app_text_field.dart';

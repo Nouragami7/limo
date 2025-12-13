@@ -1,9 +1,9 @@
 class QuestionModel {
   final String id;
   final String questionType;
-  final String? question;  // nullable, some types may not have this
-  final List<OptionModel>? options; // nullable
-  final Map<String, dynamic> extraFields; // any extra fields
+  final String? question;
+  final List<OptionModel>? options;
+  final Map<String, dynamic> extraFields;
 
   QuestionModel({
     required this.id,

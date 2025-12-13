@@ -174,8 +174,9 @@ class _QuestionType6ScreenState extends State<QuestionType6Screen> {
                         isWrong = true;
                       }
                       hasChecked = !hasChecked;
-                    });}else{ NavigationFunctions.navigateWithSlide(context, const QuestionType2Screen());
-                  }
+                    });}else{
+                  };
+
                 },
               ),
             ),

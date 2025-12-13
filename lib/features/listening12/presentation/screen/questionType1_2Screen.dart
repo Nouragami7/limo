@@ -8,7 +8,8 @@ import '../../../../core/components/progressBar.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/navigation_functions.dart';
 import '../../../../core/utils/tts_service.dart';
-import '../../../../domain/question_flow_cubit.dart';
+import '../../../questions_route/Screen/question_router_screen.dart';
+import '../../../questions_route/cubit/question_flow_cubit.dart';
 import '../../../translation1/presentation/screen/questionType2Screen.dart';
 import '../../data/models/question12_model.dart';
 import '../widgets/answersGrid.dart';
@@ -111,7 +112,7 @@ class _QuestionType12ScreenState extends State<QuestionType12Screen> {
                       hasChecked = !hasChecked;
                     });}else{
                     context.read<QuestionFlowCubit>().next();
-                    Navigator.pop(context);
+                   // Navigator.pop(context);
                    // NavigationFunctions.navigateWithSlide(context, const QuestionType2Screen());
                   }
                 },

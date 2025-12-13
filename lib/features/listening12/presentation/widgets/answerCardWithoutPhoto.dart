@@ -45,17 +45,20 @@ border: Border.all(
         ),
         child: Center(
 
-           child: Text(
-              widget.label,
-              style: TextStyle(
-                color:  widget.isSelected
-                    ? (widget.isWrong ? Colors.red : AppColors.color700)
-                    : AppColors.color700,
-                fontSize: 40,
-                fontWeight: FontWeight.w500,
-letterSpacing: 0.3
+           child: Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: Text(
+                widget.label,
+                style: TextStyle(
+                  color:  widget.isSelected
+                      ? (widget.isWrong ? Colors.red : AppColors.color700)
+                      : AppColors.color700,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+             letterSpacing: 0.3
+                ),
               ),
-            ),
+           ),
         ),
       ),
     );
