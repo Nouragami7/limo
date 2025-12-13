@@ -6,6 +6,9 @@ import '../../../../core/constants/assets.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/AppRoute.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../data/repositories/questions_repo.dart';
+import '../../../../domain/question_flow_cubit.dart';
+import '../../../../domain/question_router_screen.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 import '../widgets/app_text_field.dart';
@@ -38,6 +41,17 @@ class _LoginScreenState extends State<LoginScreen> {
       email: _email.text.trim(),
       password: _password.text,
     );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) =>
+          QuestionFlowCubit(QuestionsRepository())..start(),
+          child: QuestionRouterScreen(),
+        ),
+      ),
+    );
+
   }
 
   @override

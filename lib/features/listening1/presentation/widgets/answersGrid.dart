@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../data/models/question1_model.dart';
 import '../widgets/answerCardWithPhoto.dart';
 
 class AnswersGrid extends StatefulWidget {
   final bool isWrong;
-  final Function(String option) onTap;
+  final Function(String option) onTap; final List<Map<String, String>> options;
   final bool disabled;
-  const AnswersGrid({super.key, required this.onTap, required this.isWrong, required this.disabled});
+  const AnswersGrid({super.key, required this.onTap, required this.isWrong, required this.disabled,required this.options});
 
   @override
   State<AnswersGrid> createState() => _AnswersGridState();

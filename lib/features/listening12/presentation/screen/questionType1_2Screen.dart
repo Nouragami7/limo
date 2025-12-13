@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
 import '../../../../core/components/answer_result_section.dart';
 import '../../../../core/components/custom_btn_continue.dart';
@@ -7,12 +8,16 @@ import '../../../../core/components/progressBar.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/navigation_functions.dart';
 import '../../../../core/utils/tts_service.dart';
+import '../../../../domain/question_flow_cubit.dart';
 import '../../../translation1/presentation/screen/questionType2Screen.dart';
+import '../../data/models/question12_model.dart';
 import '../widgets/answersGrid.dart';
 
 
 class QuestionType12Screen extends StatefulWidget {
-  const QuestionType12Screen({super.key});
+  final QuestionType12Model model;
+
+  const QuestionType12Screen({super.key, required this.model});
 
   @override
   State<QuestionType12Screen> createState() => _QuestionType12ScreenState();
@@ -22,7 +27,7 @@ class _QuestionType12ScreenState extends State<QuestionType12Screen> {
   String? selectedAnswer;
   bool isCorrect = false;
   bool isWrong = false;
-  String correctAnswer = "a";
+  late String correctAnswer = widget.model.question;
   String selected = "";
   bool hasChecked = false;
 
@@ -30,7 +35,7 @@ class _QuestionType12ScreenState extends State<QuestionType12Screen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      TtsService.speak("a");
+      TtsService.speak(widget.model.question);
     });
   }
 
@@ -54,7 +59,7 @@ class _QuestionType12ScreenState extends State<QuestionType12Screen> {
                       width: 100,
                       height: 100,
                       iconSize: 60,
-                      text: "a",
+                      text: widget.model.question,
                     ),
                   ),
 
@@ -63,6 +68,7 @@ class _QuestionType12ScreenState extends State<QuestionType12Screen> {
                   AnswersGridType2(
                     disabled: hasChecked,
                     isWrong: isWrong,
+                    options: widget.model.options,
                     onTap: (s) {
                       setState(() {
                         selectedAnswer = s;
@@ -103,7 +109,10 @@ class _QuestionType12ScreenState extends State<QuestionType12Screen> {
                         isWrong = true;
                       }
                       hasChecked = !hasChecked;
-                    });}else{ NavigationFunctions.navigateWithSlide(context, const QuestionType2Screen());
+                    });}else{
+                    context.read<QuestionFlowCubit>().next();
+                    Navigator.pop(context);
+                   // NavigationFunctions.navigateWithSlide(context, const QuestionType2Screen());
                   }
                 },
               ),

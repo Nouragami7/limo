@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:limo/core/constants/assets.dart';
 import 'package:limo/core/constants/colors.dart';
 import 'package:limo/core/utils/AppRoute.dart';
@@ -23,9 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _startFlow() async {
-
     await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
+
     setState(() => showImage = true);
 
     await Future.delayed(const Duration(seconds: 1));
@@ -33,12 +34,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final isLoggedIn = await UserPrefs.isLoggedIn();
 
-    Navigator.pushReplacementNamed(
-      context,
-      isLoggedIn ? AppRoute.screen1 : AppRoute.login,
-    );
+    if (isLoggedIn) {
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoute.questions,
+      );
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoute.login,
+      );
+    }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

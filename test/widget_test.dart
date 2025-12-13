@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:limo/core/app/app.dart';
+import 'package:limo/features/auth/presentation/screen/login_screen.dart';
 import 'package:limo/features/listening1/presentation/screen/questionType1Screen.dart';
 
 import 'package:limo/main.dart';
@@ -15,7 +16,7 @@ import 'package:limo/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const QuestionType1Screen());
+    await tester.pumpWidget(const LoginScreen());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

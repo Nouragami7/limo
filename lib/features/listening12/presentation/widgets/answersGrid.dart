@@ -5,8 +5,9 @@ class AnswersGridType2 extends StatefulWidget {
   final bool isWrong;
   final Function(String option) onTap;
   final bool disabled;
+  final List<String> options;
 
-  const AnswersGridType2({super.key, required this.onTap, required this.isWrong, required this.disabled });
+  const AnswersGridType2({super.key,required this.options, required this.onTap, required this.isWrong, required this.disabled });
 
   @override
   State<AnswersGridType2> createState() => _AnswersGridType2State();
@@ -17,12 +18,7 @@ class _AnswersGridType2State extends State<AnswersGridType2> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> options =
-      ["a",
-      "h",
-      "c",
-      "d"]
-    ;
+
 
     return  Padding(
       padding: const EdgeInsets.all(16.0),
@@ -32,7 +28,7 @@ class _AnswersGridType2State extends State<AnswersGridType2> {
             ignoring: widget.disabled,
             child: GridView.builder(
         shrinkWrap: true,
-        itemCount: options.length,
+        itemCount: widget.options.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 16,
@@ -41,14 +37,14 @@ class _AnswersGridType2State extends State<AnswersGridType2> {
         ),
         itemBuilder: (context, index) {
           return AnswerCardWithoutPhoto(
-            label: options[index],
+            label: widget.options[index],
             isSelected: selectedIndex == index,
             isWrong: widget.isWrong,
             onTap: (s) { widget.disabled ? null :
               setState(() {
                 selectedIndex = index;
               });
-              widget.onTap(options[index]);            },
+              widget.onTap(widget.options[index]);            },
           );
         },
       ),),)

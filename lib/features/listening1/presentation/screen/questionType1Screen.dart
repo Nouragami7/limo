@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:limo/features/listening1/presentation/widgets/answersGrid.dart';
 import 'package:limo/features/listening12/presentation/screen/questionType1_2Screen.dart';
 import '../../../../core/components/answer_result_section.dart';
@@ -9,10 +10,14 @@ import '../../../../core/components/question_text_with_speaker.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/navigation_functions.dart';
 import '../../../../core/utils/tts_service.dart';
+import '../../../../domain/question_flow_cubit.dart';
+import '../../data/models/question1_model.dart';
 import '../widgets/answerCardWithPhoto.dart';
 
 class QuestionType1Screen extends StatefulWidget {
-  const QuestionType1Screen({super.key});
+  final QuestionType1Model model;
+
+  const QuestionType1Screen({super.key,required this.model});
 
   @override
   State<QuestionType1Screen> createState() => _QuestionType1ScreenState();
@@ -22,16 +27,34 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
   String? selectedAnswer;
   bool isCorrect = false;
   bool isWrong = false;
-  String correctAnswer = "Coffee";
+  late String correctAnswer = widget.model.correctAnswer;
   String selected = "";
   bool hasChecked = false;
+  @override
+  void didUpdateWidget(covariant QuestionType1Screen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.model != widget.model) {
+      setState(() {
+        selectedAnswer = null;
+        isCorrect = false;
+        isWrong = false;
+        hasChecked = false;
+        correctAnswer = widget.model.correctAnswer;
+      });
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        TtsService.speak(widget.model.question.toLowerCase());
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      TtsService.speak("coffee");
-    });
+      TtsService.speak(widget.model.question.toLowerCase());
+    }); print("model : ${widget.model.toString()}");
   }
   @override
   Widget build(BuildContext context) {
@@ -45,12 +68,12 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
                   ProgressBar(progress: 0.2, question: "اختر الاجابة الصحيحة"),
               Padding(
                 padding: const EdgeInsets.only(right: 25.0),
-                child: QuestionTextWithSpeaker(text: "قهوة",speakerWord: "coffee"),
+                child: QuestionTextWithSpeaker(text: widget.model.question.toLowerCase(),speakerWord: widget.model.question.toLowerCase()),
               ),
               SizedBox(height: 15),
               AnswersGrid(
                 disabled: hasChecked,
-                isWrong: isWrong,
+                isWrong: isWrong, options: widget.model.options,
                 onTap: (s) {
                   setState(() {
                     selectedAnswer = s;
@@ -91,7 +114,10 @@ class _QuestionType1ScreenState extends State<QuestionType1Screen> {
                       isWrong = true;
                     }
                     hasChecked = !hasChecked;
-                  });}else{ NavigationFunctions.navigateWithSlide(context, const QuestionType12Screen());
+                  });}else{
+                    context.read<QuestionFlowCubit>().next();
+
+                   // NavigationFunctions.navigateWithSlide(context, const QuestionType12Screen());
               }}
                 ,
               ),

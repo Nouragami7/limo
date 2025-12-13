@@ -11,5 +11,8 @@ class AppRoute{
   static const String screen5 = "/screen5";
   static const String screen6 = "/screen6";
   static const String screen7 = "/screen7";
+  static const String randomScreen = "/randomScreen";
+  static const String questions = "/questions";
+
 
 }

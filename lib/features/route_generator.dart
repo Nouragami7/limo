@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:limo/features/auth/presentation/screen/login_screen.dart';
 import 'package:limo/features/translation1/presentation/screen/questionType2Screen.dart';
 import '../core/app/splash_screen.dart';
 import '../core/utils/AppRoute.dart';
+import '../data/repositories/questions_repo.dart';
+import '../domain/question_flow_cubit.dart';
+import '../domain/question_router_screen.dart';
 import 'auth/presentation/screen/signup_screen.dart';
 import 'listening1/presentation/screen/questionType1Screen.dart';
 import 'listening12/presentation/screen/questionType1_2Screen.dart';
@@ -14,9 +18,9 @@ class RouteGenerator{
       // case AppRoute.on_board:
       //     return MaterialPageRoute(builder: (context)=> OnBoardingScreen());
       //   case AppRoute.signup:
-      //   return MaterialPageRoute(builder: (context)=> SignUpScreen());
-      case AppRoute.screen1:
-        return MaterialPageRoute(builder: (context)=>  QuestionType1Screen());
+      // //   return MaterialPageRoute(builder: (context)=> SignUpScreen());
+      // case AppRoute.screen1:
+      //   return MaterialPageRoute(builder: (context)=>  QuestionType1Screen());
         // case AppRoute.splash:
         //   return MaterialPageRoute(builder: (context)=> SplashScreen());
         //   case AppRoute.home:
@@ -24,8 +28,17 @@ class RouteGenerator{
         //     case AppRoute.login:
         //       return MaterialPageRoute(builder: (context)=> LoginScreen());
 
-            case AppRoute.screen2:
-              return MaterialPageRoute(builder: (context)=> QuestionType12Screen());
+
+      case AppRoute.questions:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) =>
+            QuestionFlowCubit(QuestionsRepository())..start(),
+            child: QuestionRouterScreen(),
+          ),
+        );
+            // case AppRoute.screen2:
+            //   return MaterialPageRoute(builder: (context)=> QuestionType12Screen());
               case AppRoute.screen3:
               return MaterialPageRoute(builder: (context)=> QuestionType2Screen());
             case AppRoute.splash:
